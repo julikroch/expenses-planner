@@ -1,13 +1,25 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, Text, View} from 'react-native';
 import {formatQuantity} from '../../helpers';
+import type {CheckBudgetT} from './types';
 import {styles} from './styles';
 
-export type CheckBudgetT = {
-  budget: string;
-};
+const CheckBudget = ({budget, expenses}: CheckBudgetT) => {
+  const [available, setAvailable] = useState(0);
+  const [spent, setSpent] = useState(0);
 
-const CheckBudget = ({budget}: CheckBudgetT) => {
+  useEffect(() => {
+    const totalSpent = expenses.reduce(
+      (total, expense) => Number(expense.quantity) + total,
+      0,
+    );
+
+    const totalAvailable = Number(budget) - totalSpent;
+
+    setSpent(totalSpent);
+    setAvailable(totalAvailable);
+  }, [budget, expenses]);
+
   return (
     <View style={styles.container}>
       <View style={styles.graphic}>
@@ -23,11 +35,11 @@ const CheckBudget = ({budget}: CheckBudgetT) => {
         </Text>
         <Text style={styles.budgetValue}>
           <Text style={styles.budgetLabel}>Available: </Text>
-          {formatQuantity(budget)}
+          {formatQuantity(available)}
         </Text>
         <Text style={styles.budgetValue}>
           <Text style={styles.budgetLabel}>Spent: </Text>
-          {formatQuantity(budget)}
+          {formatQuantity(spent)}
         </Text>
       </View>
     </View>
