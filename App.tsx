@@ -2,13 +2,16 @@ import React, {useState} from 'react';
 import {Alert, Image, Modal, Pressable, StyleSheet, View} from 'react-native';
 import CheckBudget from './src/components/CheckBudget';
 import ExpenseForm from './src/components/ExpenseForm';
+import ExpenseList from './src/components/ExpenseList';
 import Header from './src/components/Header';
 import NewBudget from './src/components/NewBudget';
+import {generateId} from './src/helpers';
+import type {Expense} from './src/types';
 
 function App() {
   const [budget, setBudget] = useState('0');
   const [validBudget, setValidBudget] = useState(false);
-  const [expenses] = useState([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
   const [modal, setModal] = useState(false);
 
   const handleBudget = (submittedBudget: string) => {
@@ -17,6 +20,16 @@ function App() {
     } else {
       Alert.alert('Error', 'Budget can not be 0 or less');
     }
+  };
+
+  const handleExpense = (expense: Expense) => {
+    if (Object.values(expense).includes('')) {
+      return Alert.alert('Error', 'All fields are mandatory');
+    }
+
+    expense.id = generateId();
+    setExpenses([...expenses, expense]);
+    setModal(!modal);
   };
 
   return (
@@ -34,6 +47,8 @@ function App() {
         )}
       </View>
 
+      {validBudget && <ExpenseList expenses={expenses} />}
+
       {modal && (
         <Modal
           animationType="slide"
@@ -41,7 +56,11 @@ function App() {
           onRequestClose={() => {
             setModal(!modal);
           }}>
-          <ExpenseForm setModal={setModal} modal={modal} />
+          <ExpenseForm
+            setModal={setModal}
+            modal={modal}
+            handleExpense={handleExpense}
+          />
         </Modal>
       )}
 
@@ -69,7 +88,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     position: 'absolute',
-    top: 120,
+    top: 10,
     right: 20,
   },
 });

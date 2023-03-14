@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Pressable, SafeAreaView, Text, TextInput, View} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {styles} from './styles';
 import type {ExpenseFormI} from './types';
 
-const ExpenseForm = ({modal, setModal}: ExpenseFormI) => {
+const ExpenseForm = ({modal, setModal, handleExpense}: ExpenseFormI) => {
+  const [expenseName, setExpenseName] = useState('');
+  const [expenseQuantity, setExpenseQuantity] = useState('');
+  const [expenseCategory, setExpenseCategory] = useState('');
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -21,6 +25,8 @@ const ExpenseForm = ({modal, setModal}: ExpenseFormI) => {
           <TextInput
             style={styles.input}
             placeholder="Expense name. ex. food"
+            value={expenseName}
+            onChangeText={setExpenseName}
           />
         </View>
         <View style={styles.field}>
@@ -29,11 +35,18 @@ const ExpenseForm = ({modal, setModal}: ExpenseFormI) => {
             style={styles.input}
             placeholder="Expense quantity. ex. 300"
             keyboardType="numeric"
+            value={expenseQuantity}
+            onChangeText={setExpenseQuantity}
           />
         </View>
         <View>
           <Text style={styles.label}>Expense type</Text>
-          <Picker style={styles.picker}>
+          <Picker
+            style={styles.picker}
+            selectedValue={expenseCategory}
+            onValueChange={val => {
+              setExpenseCategory(val);
+            }}>
             <Picker.Item label="Select" value={''} />
             <Picker.Item label="Savings" value={'savings'} />
             <Picker.Item label="Food" value={'food'} />
@@ -43,7 +56,11 @@ const ExpenseForm = ({modal, setModal}: ExpenseFormI) => {
             <Picker.Item label="Subscriptions" value={'subscriptions'} />
           </Picker>
         </View>
-        <Pressable style={styles.submitBtn}>
+        <Pressable
+          style={styles.submitBtn}
+          onPress={() =>
+            handleExpense({expenseName, expenseQuantity, expenseCategory})
+          }>
           <Text style={styles.submitBtnText}>Add expense</Text>
         </Pressable>
       </View>

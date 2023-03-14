@@ -10,7 +10,7 @@ const CheckBudget = ({budget, expenses}: CheckBudgetT) => {
 
   useEffect(() => {
     const totalSpent = expenses.reduce(
-      (total, expense) => Number(expense.quantity) + total,
+      (total, expense) => Number(expense.expenseQuantity) + total,
       0,
     );
 

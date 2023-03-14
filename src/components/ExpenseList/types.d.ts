@@ -1,6 +1,5 @@
 import {Expense} from '../../types';
 
-export type CheckBudgetT = {
-  budget: string;
+export type ExpenseListT = {
   expenses: Expense[];
 };
