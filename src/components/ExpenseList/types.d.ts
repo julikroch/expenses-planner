@@ -1,5 +1,5 @@
-import {Expense} from '../../types';
+import {ExpenseT} from '../../types';
 
 export type ExpenseListT = {
-  expenses: Expense[];
+  expenses: ExpenseT[];
 };

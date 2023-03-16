@@ -49,6 +49,7 @@ const ExpenseForm = ({modal, setModal, handleExpense}: ExpenseFormI) => {
             }}>
             <Picker.Item label="Select" value={''} />
             <Picker.Item label="Savings" value={'savings'} />
+            <Picker.Item label="Home" value={'home'} />
             <Picker.Item label="Food" value={'food'} />
             <Picker.Item label="Others" value={'others'} />
             <Picker.Item label="Fun" value={'fun'} />

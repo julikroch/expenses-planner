@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, View} from 'react-native';
+import Expense from '../Expense';
 import {styles} from './styles';
 import type {ExpenseListT} from './types';
 
@@ -10,13 +11,7 @@ const ExpenseList = ({expenses}: ExpenseListT) => {
       {!expenses.length ? (
         <Text style={styles.noExpenses}>No expenses yet</Text>
       ) : (
-        expenses.map(expense => (
-          <View key={expense.id}>
-            <Text>
-              {expense.expenseName}, ${expense.expenseQuantity}
-            </Text>
-          </View>
-        ))
+        expenses.map(expense => <Expense key={expense.id} expense={expense} />)
       )}
     </View>
   );

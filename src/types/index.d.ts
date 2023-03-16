@@ -1,4 +1,4 @@
-export type Expense = {
+export type ExpenseT = {
   id?: string;
   expenseName: string;
   expenseCategory: string;

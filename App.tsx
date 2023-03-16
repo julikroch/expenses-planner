@@ -1,17 +1,25 @@
 import React, {useState} from 'react';
-import {Alert, Image, Modal, Pressable, StyleSheet, View} from 'react-native';
+import {
+  Alert,
+  Image,
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import CheckBudget from './src/components/CheckBudget';
 import ExpenseForm from './src/components/ExpenseForm';
 import ExpenseList from './src/components/ExpenseList';
 import Header from './src/components/Header';
 import NewBudget from './src/components/NewBudget';
 import {generateId} from './src/helpers';
-import type {Expense} from './src/types';
+import type {ExpenseT} from './src/types';
 
 function App() {
   const [budget, setBudget] = useState('0');
   const [validBudget, setValidBudget] = useState(false);
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [expenses, setExpenses] = useState<ExpenseT[]>([]);
   const [modal, setModal] = useState(false);
 
   const handleBudget = (submittedBudget: string) => {
@@ -22,7 +30,7 @@ function App() {
     }
   };
 
-  const handleExpense = (expense: Expense) => {
+  const handleExpense = (expense: ExpenseT) => {
     if (Object.values(expense).includes('')) {
       return Alert.alert('Error', 'All fields are mandatory');
     }
@@ -34,20 +42,22 @@ function App() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Header />
-        {!validBudget ? (
-          <NewBudget
-            budget={budget}
-            setBudget={setBudget}
-            handleBudget={handleBudget}
-          />
-        ) : (
-          <CheckBudget budget={budget} expenses={expenses} />
-        )}
-      </View>
+      <ScrollView>
+        <View style={styles.header}>
+          <Header />
+          {!validBudget ? (
+            <NewBudget
+              budget={budget}
+              setBudget={setBudget}
+              handleBudget={handleBudget}
+            />
+          ) : (
+            <CheckBudget budget={budget} expenses={expenses} />
+          )}
+        </View>
 
-      {validBudget && <ExpenseList expenses={expenses} />}
+        {validBudget && <ExpenseList expenses={expenses} />}
+      </ScrollView>
 
       {modal && (
         <Modal
@@ -83,13 +93,14 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#3b82f6',
+    minHeight: 400,
   },
   image: {
     width: 60,
     height: 60,
     position: 'absolute',
-    top: 10,
-    right: 20,
+    bottom: 40,
+    right: 30,
   },
 });
 
