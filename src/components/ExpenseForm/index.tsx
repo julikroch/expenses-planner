@@ -1,25 +1,48 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Pressable, SafeAreaView, Text, TextInput, View} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {styles} from './styles';
-import type {ExpenseFormI} from './types';
+import type {ExpenseFormT} from './types';
 
-const ExpenseForm = ({modal, setModal, handleExpense}: ExpenseFormI) => {
+const ExpenseForm = ({
+  modal,
+  setModal,
+  handleExpense,
+  setUpdateExpense,
+  updateExpense,
+}: ExpenseFormT) => {
   const [expenseName, setExpenseName] = useState('');
   const [expenseQuantity, setExpenseQuantity] = useState('');
   const [expenseCategory, setExpenseCategory] = useState('');
+  const [id, setId] = useState('');
+  const [date, setDate] = useState(0);
+
+  useEffect(() => {
+    if (updateExpense?.expenseName) {
+      setExpenseName(updateExpense.expenseName);
+      setExpenseQuantity(updateExpense.expenseQuantity);
+      setExpenseCategory(updateExpense.expenseCategory);
+      setId(updateExpense.id!);
+      setDate(updateExpense.expenseDate);
+    }
+  }, [updateExpense]);
 
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <Pressable
           style={styles.cancelBtn}
-          onLongPress={() => setModal(!modal)}>
+          onPress={() => {
+            setModal(!modal);
+            setUpdateExpense(undefined);
+          }}>
           <Text style={styles.cancelBtnText}>Cancel</Text>
         </Pressable>
       </View>
       <View style={styles.form}>
-        <Text style={styles.title}>New Expense</Text>
+        <Text style={styles.title}>
+          {updateExpense?.expenseName ? 'Edit Expense' : ' New Expense'}
+        </Text>
         <View style={styles.field}>
           <Text style={styles.label}>Expense Name</Text>
           <TextInput
@@ -60,9 +83,17 @@ const ExpenseForm = ({modal, setModal, handleExpense}: ExpenseFormI) => {
         <Pressable
           style={styles.submitBtn}
           onPress={() =>
-            handleExpense({expenseName, expenseQuantity, expenseCategory})
+            handleExpense({
+              expenseName,
+              expenseQuantity,
+              expenseCategory,
+              id,
+              date,
+            })
           }>
-          <Text style={styles.submitBtnText}>Add expense</Text>
+          <Text style={styles.submitBtnText}>
+            {updateExpense?.expenseName ? 'Save Expense' : 'Add expense'}
+          </Text>
         </Pressable>
       </View>
     </SafeAreaView>

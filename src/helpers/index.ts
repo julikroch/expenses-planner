@@ -10,3 +10,13 @@ export const generateId = () => {
   const date = Date.now().toString(36);
   return random + date;
 };
+
+export const formatDate = (date: number) => {
+  const newDate = new Date(date);
+
+  return newDate.toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+  });
+};

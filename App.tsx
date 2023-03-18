@@ -21,6 +21,7 @@ function App() {
   const [validBudget, setValidBudget] = useState(false);
   const [expenses, setExpenses] = useState<ExpenseT[]>([]);
   const [modal, setModal] = useState(false);
+  const [updateExpense, setUpdateExpense] = useState<ExpenseT | undefined>();
 
   const handleBudget = (submittedBudget: string) => {
     if (Number(submittedBudget)) {
@@ -31,12 +32,26 @@ function App() {
   };
 
   const handleExpense = (expense: ExpenseT) => {
-    if (Object.values(expense).includes('')) {
+    if (
+      [
+        expense.expenseCategory,
+        expense.expenseName,
+        expense.expenseQuantity,
+      ].includes('')
+    ) {
       return Alert.alert('Error', 'All fields are mandatory');
     }
 
-    expense.id = generateId();
-    setExpenses([...expenses, expense]);
+    if (expense.id) {
+      const updateExpenses = expenses.map(expenseState =>
+        expenseState.id === expense.id ? expense : expenseState,
+      );
+      setExpenses(updateExpenses);
+    } else {
+      expense.id = generateId();
+      expense.expenseDate = Date.now();
+      setExpenses([...expenses, expense]);
+    }
     setModal(!modal);
   };
 
@@ -56,7 +71,14 @@ function App() {
           )}
         </View>
 
-        {validBudget && <ExpenseList expenses={expenses} />}
+        {validBudget && (
+          <ExpenseList
+            expenses={expenses}
+            setModal={setModal}
+            modal={modal}
+            setUpdateExpense={setUpdateExpense}
+          />
+        )}
       </ScrollView>
 
       {modal && (
@@ -70,6 +92,8 @@ function App() {
             setModal={setModal}
             modal={modal}
             handleExpense={handleExpense}
+            setUpdateExpense={setUpdateExpense}
+            updateExpense={updateExpense}
           />
         </Modal>
       )}

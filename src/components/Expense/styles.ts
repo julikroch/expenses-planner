@@ -40,4 +40,8 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '700',
   },
+  date: {
+    fontWeight: '700',
+    color: '#db2777',
+  },
 });
