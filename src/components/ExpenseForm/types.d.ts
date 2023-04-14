@@ -6,4 +6,5 @@ export type ExpenseFormT = {
   handleExpense: (expense: Expense) => void;
   setUpdateExpense: React.Dispatch<React.SetStateAction<ExpenseT | undefined>>;
   updateExpense: ExpenseT | undefined;
+  handleDelete: (id: string) => void;
 };

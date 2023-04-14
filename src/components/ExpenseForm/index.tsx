@@ -10,6 +10,7 @@ const ExpenseForm = ({
   handleExpense,
   setUpdateExpense,
   updateExpense,
+  handleDelete,
 }: ExpenseFormT) => {
   const [expenseName, setExpenseName] = useState('');
   const [expenseQuantity, setExpenseQuantity] = useState('');
@@ -29,14 +30,19 @@ const ExpenseForm = ({
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
+      <View style={styles.btnContainer}>
         <Pressable
-          style={styles.cancelBtn}
+          style={[styles.btn, styles.btnCancel]}
           onPress={() => {
             setModal(!modal);
             setUpdateExpense(undefined);
           }}>
-          <Text style={styles.cancelBtnText}>Cancel</Text>
+          <Text style={[styles.btnText]}>Cancel</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.btn, styles.btnDelete]}
+          onPress={() => handleDelete(id)}>
+          <Text style={[styles.btnText]}>Delete</Text>
         </Pressable>
       </View>
       <View style={styles.form}>

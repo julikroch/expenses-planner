@@ -55,6 +55,23 @@ function App() {
     setModal(!modal);
   };
 
+  const handleDelete = (id: string) => {
+    Alert.alert('Delete this expense?', 'This can not be recovered', [
+      {text: 'No', style: 'cancel'},
+      {
+        text: 'Yes',
+        onPress: () => {
+          const updateExpenses = expenses.filter(
+            expenseState => expenseState.id !== id,
+          );
+          setExpenses(updateExpenses);
+          setModal(!modal);
+          setUpdateExpense(undefined);
+        },
+      },
+    ]);
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -94,6 +111,7 @@ function App() {
             handleExpense={handleExpense}
             setUpdateExpense={setUpdateExpense}
             updateExpense={updateExpense}
+            handleDelete={handleDelete}
           />
         </Modal>
       )}
@@ -120,6 +138,10 @@ const styles = StyleSheet.create({
     minHeight: 400,
   },
   image: {
+    width: 60,
+    height: 60,
+  },
+  pressable: {
     width: 60,
     height: 60,
     position: 'absolute',

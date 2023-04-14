@@ -43,13 +43,23 @@ export const styles = StyleSheet.create({
   picker: {
     margin: 0,
   },
-  cancelBtn: {
-    backgroundColor: '#db2777',
+  btnContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  btn: {
     padding: 10,
     marginTop: 30,
     marginHorizontal: 10,
+    flex: 1,
   },
-  cancelBtnText: {
+  btnCancel: {
+    backgroundColor: '#db2777',
+  },
+  btnDelete: {
+    backgroundColor: 'red',
+  },
+  btnText: {
     textTransform: 'uppercase',
     textAlign: 'center',
     fontWeight: 'bold',
